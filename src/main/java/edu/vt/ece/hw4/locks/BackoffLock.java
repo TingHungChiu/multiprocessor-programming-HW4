@@ -7,14 +7,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BackoffLock implements Lock {
 
-    public static double count=0;
+    public static double count;
     private AtomicBoolean state;
     private final String backoffStrategy;
 
     public BackoffLock(String backoffStrategy) {
         this.state = new AtomicBoolean(false);
         this.backoffStrategy = backoffStrategy;
-        //System.out.println("Strategy:"+backoffStrategy);
+        count = 0;
     }
 
     @Override

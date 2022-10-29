@@ -9,10 +9,8 @@ public class ExponentialBackoff implements Backoff {
 
     @Override
     public void backoff() throws InterruptedException {
-        //System.out.println("I am in backoff()");
 
         a = count;
-        //System.out.println("a:"+count);
         int delay = (int) Math.pow(2,a);
         System.out.println("delay:"+delay);
         Thread.sleep(delay);

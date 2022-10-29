@@ -5,7 +5,7 @@ import edu.vt.ece.hw4.barriers.TTASBarrier;
 import edu.vt.ece.hw4.barriers.TTASBarrier2;
 import edu.vt.ece.hw4.bench.*;
 import edu.vt.ece.hw4.locks.*;
-import jdk.incubator.vector.VectorOperators;
+
 
 public class Benchmark {
 

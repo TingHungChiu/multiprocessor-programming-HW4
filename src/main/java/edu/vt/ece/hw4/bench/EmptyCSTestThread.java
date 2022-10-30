@@ -23,13 +23,11 @@ public class EmptyCSTestThread extends Thread implements ThreadId {
     @Override
     public void run() {
         double start = System.currentTimeMillis();
-        System.out.println(start);
         for (int i = 0; i < iter; i++) {
             lock.lock();
             lock.unlock();
         }
-        elapsed = (float)(System.currentTimeMillis() - start)/(float)iter;
-        System.out.println("elapsed: "+elapsed);
+        elapsed = System.currentTimeMillis() - start;
     }
 
     public int getThreadId() {

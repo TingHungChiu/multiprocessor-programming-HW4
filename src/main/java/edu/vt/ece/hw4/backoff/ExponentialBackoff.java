@@ -12,7 +12,6 @@ public class ExponentialBackoff implements Backoff {
 
         a = count;
         int delay = (int) Math.pow(2,a);
-        System.out.println("delay:"+delay);
         Thread.sleep(delay);
     }
 

@@ -29,7 +29,7 @@ public class Benchmark {
     }
 
     private static void run(String[] args, String mode, String lockClass, int threadCount, int iters) throws Exception {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 20; i++) {
             Lock lock = null;
             switch (lockClass.trim()) {
                 case ALOCK:

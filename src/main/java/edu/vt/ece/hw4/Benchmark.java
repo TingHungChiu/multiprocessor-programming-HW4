@@ -123,7 +123,7 @@ public class Benchmark {
             totalTime += threads[t].getElapsedTime();
         }
 
-        System.out.println("Average time per thread per iters is " + String.format("%.10f",(totalTime /(double)threadCount)/(double)iters) + "ms");
+        System.out.println("Average time per thread per iters is " + String.format("%.20f",totalTime /(double)threadCount) + "ms");
     }
 
     static void runLongCS(Lock lock, int threadCount, int iters) throws Exception {

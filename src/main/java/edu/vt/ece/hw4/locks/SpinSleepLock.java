@@ -20,7 +20,6 @@ public class SpinSleepLock implements Lock {
         count.getAndIncrement();
         int x = count.get();
             if (x >maxspin) {
-                System.out.println("inside maxspin");
                 try {
                     synchronized (this){
                         wait();

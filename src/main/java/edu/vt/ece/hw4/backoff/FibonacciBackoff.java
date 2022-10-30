@@ -7,6 +7,7 @@ public class FibonacciBackoff implements Backoff {
     int Fibonacci(int tmp){
         int num1 = 0, num2 = 1;
         int counter = 0;
+        // Iterate till counter is N
         switch(tmp){
             case 1:
                 return 0;
@@ -26,6 +27,7 @@ public class FibonacciBackoff implements Backoff {
     public void backoff() throws InterruptedException {
         a = count+1;
 
+        //System.out.println("a:"+count);
         int delay = Fibonacci((int)a);
         System.out.println("delay:"+delay);
         Thread.sleep(delay);

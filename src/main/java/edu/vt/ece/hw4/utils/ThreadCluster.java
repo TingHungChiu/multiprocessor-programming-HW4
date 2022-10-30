@@ -28,8 +28,8 @@ public class ThreadCluster {
         threadID.set(value);
     }
 
-    public static int getCluster() {
-        return threadID.get() / 2;
+    public static int getCluster(int cluster) {
+        return threadID.get() % cluster+1;
     }
     private static class ThreadLocalID extends ThreadLocal<Integer> {
         protected synchronized Integer initialValue() {

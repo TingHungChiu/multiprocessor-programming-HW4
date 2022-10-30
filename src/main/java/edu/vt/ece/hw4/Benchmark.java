@@ -16,6 +16,7 @@ public class Benchmark {
     private static final String SPINSLEEPLOCK = "SpinSleepLock";
     private static final String PRIORITYQUEUELOCK = "PriorityQueueLock";
     private static final String TTASLOCK = "TTASLock";
+    private static final String SIMPLEHLOCK = "SimpleHLock";
 
     public static void main(String[] args) throws Exception {
         String mode = args.length <= 0 ? "normal" : args[0];
@@ -48,6 +49,10 @@ public class Benchmark {
                     break;
                 case TTASLOCK:
                     lock = new TTASLock();
+                    break;
+                case SIMPLEHLOCK:
+                    lock = new SimpleHLock(Integer.valueOf(args[4]));
+                    break;
             }
             switch (mode.trim().toLowerCase()) {
                 case "normal":
@@ -69,6 +74,9 @@ public class Benchmark {
                     final int[] b = new int[threadCount];
                     runBarrier2(b,threadCount);
                     break;
+                case "cluster":
+                    final Counter counter2 = new SharedCounter(0, lock);
+                    runClusterCS(counter2,threadCount,iters);
                 default:
                     throw new UnsupportedOperationException("Implement this");
             }
@@ -92,7 +100,7 @@ public class Benchmark {
             totalTime += threads[t].getElapsedTime();
         }
 
-        System.out.println("Average time per thread is " + totalTime /threadCount + "ms");
+        System.out.println("Average time per thread is "+String.format("%.5f",(float)totalTime /(float)threadCount)+ "ms" );
     }
 
     private static void runEmptyCS(Lock lock, int threadCount, int iters) throws Exception {
@@ -108,13 +116,13 @@ public class Benchmark {
             threads[t].start();
         }
 
-        long totalTime = 0;
+        double totalTime = 0;
         for (int t = 0; t < threadCount; t++) {
             threads[t].join();
             totalTime += threads[t].getElapsedTime();
         }
 
-        System.out.println("Average time per thread is " + totalTime / threadCount + "ms");
+        System.out.println("Average time per thread is " + String.format("%.5f",totalTime /(double)threadCount) + "ms");
     }
 
     static void runLongCS(Lock lock, int threadCount, int iters) throws Exception {
@@ -169,5 +177,25 @@ public class Benchmark {
         }
 
         System.out.println("Average time per thread is " + totalTime/threadCount + "ms");
+    }
+
+    private static void runClusterCS(Counter counter, int threadCount ,int iters) throws Exception{
+        final TestThread[] threads = new TestThread[threadCount];
+        EmptyCSTestThread.reset();
+        for (int t = 0; t < threadCount; t++) {
+            threads[t] = new TestThread(counter, iters);
+        }
+        for (int t = 0; t < threadCount; t++)
+            threads[t] = new TestThread(counter, iters);
+        for (int t = 0; t < threadCount; t++)
+            threads[t].start();
+
+        long totalTime = 0;
+        for (int t = 0; t < threadCount; t++) {
+            threads[t].join();
+            totalTime += threads[t].getElapsedTime();
+        }
+
+        System.out.println("Average time per thread is " + (float)totalTime/threadCount + "ms");
     }
 }

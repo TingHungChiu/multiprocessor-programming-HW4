@@ -7,7 +7,7 @@ public class EmptyCSTestThread extends Thread implements ThreadId {
 
     private Lock lock;
     private int id;
-    private long elapsed;
+    private double elapsed;
     private int iter;
 
     public EmptyCSTestThread(Lock lock, int iter) {
@@ -22,7 +22,7 @@ public class EmptyCSTestThread extends Thread implements ThreadId {
 
     @Override
     public void run() {
-        long start = System.currentTimeMillis();
+        double start = System.currentTimeMillis();
         for (int i = 0; i < iter; i++) {
             lock.lock();
             lock.unlock();
@@ -34,7 +34,7 @@ public class EmptyCSTestThread extends Thread implements ThreadId {
         return id;
     }
 
-    public long getElapsedTime() {
+    public double getElapsedTime() {
         return elapsed;
     }
 }

@@ -29,7 +29,7 @@ public class ThreadCluster {
     }
 
     public static int getCluster(int cluster) {
-        return threadID.get() % cluster+1;
+        return threadID.get() % cluster;
     }
     private static class ThreadLocalID extends ThreadLocal<Integer> {
         protected synchronized Integer initialValue() {

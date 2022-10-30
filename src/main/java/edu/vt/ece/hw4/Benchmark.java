@@ -51,7 +51,7 @@ public class Benchmark {
                     lock = new TTASLock();
                     break;
                 case SIMPLEHLOCK:
-                    lock = new SimpleHLock(Integer.valueOf(args[4]));
+                    lock = new SimpleHLock(Integer.valueOf(args[4]),threadCount);
                     break;
             }
             switch (mode.trim().toLowerCase()) {
@@ -77,6 +77,7 @@ public class Benchmark {
                 case "cluster":
                     final Counter counter2 = new SharedCounter(0, lock);
                     runClusterCS(counter2,threadCount,iters);
+                    break;
                 default:
                     throw new UnsupportedOperationException("Implement this");
             }
@@ -122,7 +123,7 @@ public class Benchmark {
             totalTime += threads[t].getElapsedTime();
         }
 
-        System.out.println("Average time per thread is " + String.format("%.5f",totalTime /(double)threadCount) + "ms");
+        System.out.println("Average time per thread per iters is " + String.format("%.10f",(totalTime /(double)threadCount)/(double)iters) + "ms");
     }
 
     static void runLongCS(Lock lock, int threadCount, int iters) throws Exception {
@@ -181,7 +182,7 @@ public class Benchmark {
 
     private static void runClusterCS(Counter counter, int threadCount ,int iters) throws Exception{
         final TestThread[] threads = new TestThread[threadCount];
-        EmptyCSTestThread.reset();
+        TestThread.reset();
         for (int t = 0; t < threadCount; t++) {
             threads[t] = new TestThread(counter, iters);
         }

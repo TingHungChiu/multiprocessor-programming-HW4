@@ -1,7 +1,9 @@
 package edu.vt.ece.hw4.locks;
 
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class SpinSleepLock implements Lock {
     private int maxspin;
@@ -17,14 +19,16 @@ public class SpinSleepLock implements Lock {
     public void lock() {
         count.getAndIncrement();
         int x = count.get();
-        if (x >maxspin) {
-                unlock();
+            if (x >maxspin) {
+                System.out.println("inside maxspin");
                 try {
-                    wait();
+                    synchronized (this){
+                        wait();
+                    }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-        }
+            }
         while (true) {
             while (state.get()) {};  // ece.vt.edu.spin
             if (!state.getAndSet(true))
@@ -36,6 +40,9 @@ public class SpinSleepLock implements Lock {
     public void unlock() {
         state.set(false);
         count.decrementAndGet();
+        synchronized (this){
+            notify();
+        }
     }
 
 }
